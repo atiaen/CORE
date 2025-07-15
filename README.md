@@ -1,4 +1,5 @@
-# TODO
+# CORE
+## About
 TLDR slightly opinionated way I'll be making games with Raylib.
 
 # Current features include
