@@ -16,10 +16,10 @@ public class Game
     public int screenHeight = 720;
 
     public Font baseFont;
-    public Scene currScene;
+    public Scene? currScene;
 
     public Camera2D camera2D = new Camera2D();
-    public static Game Instance { get; private set; }
+    public static Game? Instance { get; private set; }
 
     RenderTexture2D bloomTarget;
 
@@ -28,7 +28,7 @@ public class Game
     int resolutionLoc = 0;
     float deltaTime;
 
-    float[] resolution;
+    float[]? resolution;
     int timeLoc = 0;
     Shader postProcessShader;
     public Shader particleShader;
@@ -56,7 +56,11 @@ public class Game
         // GraphicalUiElement.CanvasWidth = screenWidth;
         // GraphicalUiElement.CanvasHeight = screenHeight;
 
-        resolution = [Instance.screenWidth, Instance.screenHeight];
+        if (Instance != null)
+        {
+            resolution = [Instance.screenWidth, Instance.screenHeight];
+
+        }
 
         // GlobalFader.Fader(() =>
         // {
@@ -87,7 +91,7 @@ public class Game
 
         // GlobalParticles.StartBackground();
 
-        currScene.Start();
+        currScene?.Start();
         // GlobalFader.Unfade(() => { }, 0.8f);
 
 
@@ -111,7 +115,7 @@ public class Game
 
         BeginMode2D(shakenCamera);
         // ParticleSystem.Draw();
-        currScene.Draw();
+        currScene?.Draw();
 
         // GumService.Default.Draw();
         // GlobalFader.Draw();
@@ -146,8 +150,12 @@ public class Game
 
         if (IsWindowResized())
         {
-            resolution[0] = (float)GetScreenWidth();
-            resolution[1] = (float)GetScreenHeight();
+            if (resolution != null)
+            {
+                resolution[0] = (float)GetScreenWidth();
+                resolution[1] = (float)GetScreenHeight();
+            }
+
             screenWidth = GetScreenWidth();
             screenHeight = GetScreenHeight();
             postProcessTarget = LoadRenderTexture(screenWidth, screenHeight);
@@ -159,7 +167,7 @@ public class Game
         time = (float)GetTime();
         SetShaderValue(postProcessShader, timeLoc, time, ShaderUniformDataType.Float);
 
-        currScene.Update();
+        currScene?.Update();
         // Root.UpdateLayout();
 
         // GumService.Default.Update(0);
@@ -190,7 +198,7 @@ public class Game
     {
         UnloadRenderTexture(bloomTarget);
         // ParticleSystem.Stop();
-        currScene.Stop();
+        currScene?.Stop();
         CloseWindow();
     }
 }
